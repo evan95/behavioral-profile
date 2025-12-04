@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Behavioral Animal Profile</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <main class="container">
+    <h1>Behavioral Animal Profile — Quick Test</h1>
+    <p>Choose the option that best describes you. The result will show your dominant profile and full descriptions for all animals.</p>
+
+    <form id="quiz-form" method="post" action="/result">
+      <input type="hidden" name="answers" id="answers">
+      {% for q in questions %}
+      <section class="question">
+        <h3>{{ q.id }}. {{ q.text }}</h3>
+        <div class="options">
+          {% for opt in q.options %}
+            <label class="option">
+              <input type="radio" name="q{{ q.id }}" value="{{ loop.index0 }}" required>
+              <span>{{ opt }}</span>
+            </label>
+          {% endfor %}
+        </div>
+      </section>
+      {% endfor %}
+
+      <div class="actions">
+        <button type="button" id="submit-btn">Submit</button>
+        <button type="reset">Reset</button>
+      </div>
+    </form>
+  </main>
+
+<script src="/static/script.js"></script>
+</body>
+</html>

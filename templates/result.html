@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Results — Behavioral Animal Profile</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <main class="container">
+    <h1>Your dominant profile: {{ top }}</h1>
+
+    <section class="summary">
+      <h2>Scores (points)</h2>
+      <ul>
+        {% for a, v in totals.items() %}
+          <li><strong>{{ a }}</strong>: {{ v }} ({{ percents[a] }}%)</li>
+        {% endfor %}
+      </ul>
+    </section>
+
+    <section class="dominant">
+      <div class="dominant-header">
+        <div class="dominant-image">
+          <img
+            src="/static/images/{{ top | lower }}.jpg"
+            alt="{{ top }} image"
+            onerror="this.onerror=null; this.src='/static/images/{{ top | lower }}.jpg';"
+            width="320"
+            height="220"
+          >
+        </div>
+
+        <div class="dominant-text">
+          <h2>{{ top }} — Full Description</h2>
+          <p>{{ descriptions[top] }}</p>
+          <h3>Practical recommendations</h3>
+          <p>{{ recommendations[top] }}</p>
+        </div>
+      </div>
+
+      <div class="dominant-details">
+        <h4>Strengths</h4>
+        <ul>
+          {% for s in strengths_weaknesses[top].strengths %}
+            <li>{{ s }}</li>
+          {% endfor %}
+        </ul>
+
+        <h4>Weaknesses</h4>
+        <ul>
+          {% for w in strengths_weaknesses[top].weaknesses %}
+            <li>{{ w }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </section>
+
+
+    <hr>
+    <section class="all">
+      <h2>All animal descriptions</h2>
+      {% for a in animals %}
+        <article class="animal">
+          <h3>{{ a }}</h3>
+          <p>{{ descriptions[a] }}</p>
+          <p><strong>Recommendations:</strong> {{ recommendations[a] }}</p>
+          <p><strong>Strengths:</strong> {{ strengths_weaknesses[a].strengths|join(', ') }}</p>
+          <p><strong>Weaknesses:</strong> {{ strengths_weaknesses[a].weaknesses|join(', ') }}</p>
+        </article>
+      {% endfor %}
+    </section>
+
+    <a class="again" href="/">← Take the quiz again</a>
+  </main>
+</body>
+</html>
