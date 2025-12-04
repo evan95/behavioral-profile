@@ -1,4 +1,4 @@
-name: Deploy Quiz to GitHub Pages
+name: Build and Deploy Jinja to GitHub Pages
 
 on:
   push:
@@ -6,35 +6,35 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Build the static site structure for GitHub Pages
-      - name: Prepare site folder
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
         run: |
-          mkdir site
-          # Copy templates as HTML
-          cp -r templates/* site/
-          # Copy static files
-          mkdir -p site/static
-          cp -r static/* site/static/
+          pip install jinja2
+
+      - name: Run build script
+        run: |
+          python build.py
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./site
+          path: dist
 
   deploy:
     needs: build
